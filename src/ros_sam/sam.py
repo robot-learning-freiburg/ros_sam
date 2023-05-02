@@ -1,0 +1,30 @@
+from pathlib import Path
+
+from segment_anything import sam_model_registry, \
+                             SamPredictor
+
+class SAM():
+    def __init__(self, model_type, cuda_device=None) -> None:
+        checkpoints = list(Path(f'{Path(__file__).parent}/../../models').glob(f'sam_{model_type}_*.pth'))
+
+        if len(checkpoints) == 0:
+            raise RuntimeError(f'No matching checkpoints for SAM model "{model_type}" was found in "package://ros_sam/models"')
+        
+        if len(checkpoints) > 1:
+            raise RuntimeError(f'No unique checkpoint for SAM model "{model_type}" found in "package://ros_sam/models"')
+
+        sam_model    = sam_model_registry[model_type](checkpoint=checkpoints[0])
+        self._device = cuda_device
+
+        if self._device is not None:
+            sam_model.to(device=self._device)
+
+        self._predictor = SamPredictor(sam_model)
+    
+    def segment(self, img, points, point_labels, multimask=True):
+        self._predictor.set_image(img)        
+        return self._predictor.predict(
+            point_coords=points,
+            point_labels=point_labels,
+            multimask_output=multimask,
+        )

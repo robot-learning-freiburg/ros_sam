@@ -1,0 +1,10 @@
+sensor_msgs/Image     image            # Image to segment
+geometry_msgs/Point[] query_points     # Points to start segmentation from
+int32[]               query_labels     # Mark points as positive or negative samples
+bool                  multimask        # Generate multiple masks
+bool                  logits           # Send back logits
+# Should we add an option to return the masked part of the image directly?
+---
+sensor_msgs/Image[]   masks            # Masks generated for the query
+float32[]             scores           # Scores for the masks
+sensor_msgs/Image[]   logits           # Logit activations of the masks
