@@ -1,8 +1,9 @@
-sensor_msgs/Image     image            # Image to segment
-geometry_msgs/Point[] query_points     # Points to start segmentation from
-int32[]               query_labels     # Mark points as positive or negative samples
-bool                  multimask        # Generate multiple masks
-bool                  logits           # Send back logits
+sensor_msgs/Image        image            # Image to segment
+geometry_msgs/Point[]    query_points     # Points to start segmentation from
+int32[]                  query_labels     # Mark points as positive or negative samples
+std_msgs/Int32MultiArray boxes            # Boxes can only be positive samples
+bool                     multimask        # Generate multiple masks
+bool                     logits           # Send back logits
 # Should we add an option to return the masked part of the image directly?
 ---
 sensor_msgs/Image[]   masks            # Masks generated for the query
