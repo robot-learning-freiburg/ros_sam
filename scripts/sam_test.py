@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 from cv_bridge import CvBridge
 from pathlib   import Path
 
-from geometry_msgs.msg import Point as PointMsg
+from geometry_msgs.msg import Point           as PointMsg
+from std_msgs.msg      import Int32MultiArray as Int32MultiArrayMsg
 
 from ros_sam.srv import Segmentation         as SegmentationSrv, \
                         SegmentationRequest  as SegmentationRequestMsg
@@ -58,7 +59,8 @@ if __name__ == '__main__':
     sam_service = rospy.ServiceProxy('ros_sam/segment', SegmentationSrv)
 
     try:
-        res = sam_service(img_msg, msg_points, labels, True, True)
+        res = sam_service(img_msg, msg_points, labels, 
+                          Int32MultiArrayMsg(), True, True)
     except rospy.ServiceException as e:
         print(f'{e}')
         print('exception raised')
