@@ -25,17 +25,22 @@ if __name__ == '__main__':
     sam = SAM(model, cuda)
 
     def srv_segmentation(req : SegmentationRequestMsg):
-        img    = cv2.cvtColor(bridge.imgmsg_to_cv2(req.image), cv2.COLOR_BGR2RGB)
-        points = np.vstack([(p.x, p.y) for p in req.query_points])
-        labels = np.asarray(req.query_labels)
-        masks, scores, logits = sam.segment(img, points, labels, req.multimask)
-        
-        res = SegmentationResponseMsg()
-        res.masks  = [bridge.cv2_to_imgmsg(m.astype(np.uint8)) for m in masks]
-        res.scores = scores.tolist()
-        if req.logits:
-            res.logits = [bridge.cv2_to_imgmsg(l) for l in logits]
-        return res
+        try:
+            img    = cv2.cvtColor(bridge.imgmsg_to_cv2(req.image), cv2.COLOR_BGR2RGB)
+            points = np.vstack([(p.x, p.y) for p in req.query_points])
+            boxes  = np.asarray(req.boxes.data).reshape((len(req.boxes.data) // 4, 4))[0] if len(req.boxes.data) > 0 else None
+            labels = np.asarray(req.query_labels)
+            masks, scores, logits = sam.segment(img, points, labels, boxes, req.multimask)
+            
+            res = SegmentationResponseMsg()
+            res.masks  = [bridge.cv2_to_imgmsg(m.astype(np.uint8)) for m in masks]
+            res.scores = scores.tolist()
+            if req.logits:
+                res.logits = [bridge.cv2_to_imgmsg(l) for l in logits]
+            return res
+        except Exception as e:
+            print(f'{e}')
+            raise Exception('Failure during service call. Check output on SAM node.')
 
     srv = rospy.Service('~segment', SegmentationSrv, srv_segmentation)
 
