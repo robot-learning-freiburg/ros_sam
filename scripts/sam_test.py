@@ -62,7 +62,8 @@ if __name__ == '__main__':
     print(img_msg.encoding)
 
     try:
-        res = sam_service(img_msg, msg_points, labels, boxes, True, True)
+        res = sam_service(img_msg, msg_points, labels, 
+                          Int32MultiArrayMsg(), True, True)
     except rospy.ServiceException as e:
         print(f'{e}')
         print('exception raised')
