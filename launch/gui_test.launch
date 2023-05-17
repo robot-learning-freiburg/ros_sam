@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+
+  <node type="rqt_image_view_seg" name="rqt_image_view_seg" pkg="rqt_image_view_seg" output="screen"/>
+  <node type="rqt_image_view" name="rqt_image_view" pkg="rqt_image_view"/>
+
+
+</launch>
