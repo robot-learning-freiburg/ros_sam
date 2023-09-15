@@ -11,6 +11,10 @@ Installation is easy:
 
 ## Using with RQT click interface
 
+To use the GUI install the following in your ROS workspace:
+
+[rqt_image_view_seg](https://github.com/ipab-slmc/rqt_image_view_seg)
+
 Run the launch file:
 
 `roslaunch ros_sam gui_test.launch`
