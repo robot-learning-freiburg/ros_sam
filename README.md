@@ -19,6 +19,8 @@ Check the terminal and wait until the SAM model has finished loading.
 
 There will be two windows loaded. One will have the header `rqt_image_view_seg__ImageView` and the other `rqt_image_view__ImageView`, note the lack of `_seg`. The first window is where you should click, so select the topic of the camera you want to view from the drop down. In the second window you should select `/rqt_image_segmentation/masked_image`. This is where the segmented image will be displayed.
 
+<img src="https://github.com/ARoefer/ros_sam/blob/devel/russell/figures/interface-example.png" width=50% height=50%>
+
 ## Using ROS SAM standalone
 
 Run the SAM ROS node using `rosrun`:
