@@ -15,7 +15,7 @@ from ros_sam import SAM
 if __name__ == '__main__':
     rospy.init_node('ros_sam')
 
-    model = rospy.get_param('~model', 'vit_h')
+    model = rospy.get_param('~model', 'vit_l')
     cuda  = rospy.get_param('~cuda', 'cuda')
 
     bridge = CvBridge()
@@ -30,8 +30,16 @@ if __name__ == '__main__':
             points = np.vstack([(p.x, p.y) for p in req.query_points])
             boxes  = np.asarray(req.boxes.data).reshape((len(req.boxes.data) // 4, 4))[0] if len(req.boxes.data) > 0 else None
             labels = np.asarray(req.query_labels)
+
+            print("Segmenting at pixels:")
+            for point in points:
+                print(f"{point[0]}, {point[1]}")
+                
+
+            print(img.shape)
+
             masks, scores, logits = sam.segment(img, points, labels, boxes, req.multimask)
-            
+
             res = SegmentationResponseMsg()
             res.masks  = [bridge.cv2_to_imgmsg(m.astype(np.uint8)) for m in masks]
             res.scores = scores.tolist()
