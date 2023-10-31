@@ -21,6 +21,30 @@ The node currently offers a single service `ros_sam/segment` which can be called
 
 You can test SAM by starting the node and then running `rosrun ros_sam sam_test.py`.
 
+## Using the ROS SAM client
+
+Initialize the client with the service name of the SAM segmentation service
+```python
+from ros_sam import SAMClient
+sam_client = SAMClient('ros_sam')
+```
+
+Call the segment method with the input image, input prompt points and corresponding labels. This returns 3 segmentation masks for the object and their corresponding confidence scores
+```python
+img = cv2.imread('path/to/image.png')
+points = np.array([[100, 100], [200, 200], [300, 300]])
+labels = [1, 1, 0]
+masks, scores = sam_client.segment(img, points, labels)
+```
+
+Additional utilities for visualizing segmentation masks and input prompts
+```python
+from ros_sam import show_mask, show_points
+show_mask(masks[0], plt.gca())
+show_points(points, np.asarray(labels), plt.gca())
+```
+<img src="https://github.com/ARoefer/ros_sam/blob/devel/harsha/figures/segmentation-example.png" width=50% height=50%>
+
 ## Using with RQT click interface
 
 To use the GUI install the following in your ROS workspace:
