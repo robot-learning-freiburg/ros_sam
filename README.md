@@ -23,29 +23,29 @@ You can test SAM by starting the node and then running `rosrun ros_sam sam_test.
 
 ## ROS SAM Services
 
-`ros_sam` provides a single service `ros_sam/segment` invoked using the service proxy
+`ros_sam` offers a single service `segment` of the type `ros_sam/Segmentation.srv`. The service definition is
+```
+sensor_msgs/Image        image            # Image to segment
+geometry_msgs/Point[]    query_points     # Points to start segmentation from
+int32[]                  query_labels     # Mark points as positive or negative samples
+std_msgs/Int32MultiArray boxes            # Boxes can only be positive samples
+bool                     multimask        # Generate multiple masks
+bool                     logits           # Send back logits
 
-```python
-from ros_sam.srv import Segmentation
-sam_service = rospy.ServiceProxy('ros_sam/segment', Segmentation)
+---
+
+sensor_msgs/Image[]   masks            # Masks generated for the query
+float32[]             scores           # Scores for the masks
+sensor_msgs/Image[]   logits           # Logit activations of the masks
 ```
 
-The `ros_sam/segment` service request takes input image, input point prompts, corresponding labels and the box prompt.
-```python
-response = sam_service(image = CvBridge(img_rgb),                             # Input image
-            query_points = [PointMsg(x=x, y=y, z=0) for (x, y) in points],    # Input prompt points
-            query_labels = labels,                                            # Input positive and negative labels for points
-            boxes = msg_boxes,                                                # Positive Box prompts or None
-            multimask = True,                                                 # Multiple segmentation masks with confidence scores returned if True
-            logits = True                                                     # Low resolution mask logits returned if True
-            )
-```
+The service request takes input image, input point prompts, corresponding labels and the box prompt. The service response contains the segmentation masks, confidence scores and the logit activations of the masks.
 
-The `ros_sam/segment` service response contains the segmentation masks `response.masks`, confidence scores `response.scores` and the logit activations of the masks `response.logits`
+To learn more about the types and use of different queries, please refer to the [original SAM tutorial](https://github.com/facebookresearch/segment-anything/blob/main/notebooks/predictor_example.ipynb)
 
 The service calls are wrapped up conveniently in the ROS SAM client
 
-## Using the ROS SAM client
+## Using ROS SAM client
 
 Alternatively, one can use the ROS SAM client instead of the service calls.
 
