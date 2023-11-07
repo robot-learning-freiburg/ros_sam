@@ -21,7 +21,33 @@ The node currently offers a single service `ros_sam/segment` which can be called
 
 You can test SAM by starting the node and then running `rosrun ros_sam sam_test.py`.
 
+## ROS SAM Services
+
+`ros_sam` provides a single service `ros_sam/segment` invoked using the service proxy
+
+```python
+from ros_sam.srv import Segmentation
+sam_service = rospy.ServiceProxy('ros_sam/segment', Segmentation)
+```
+
+The `ros_sam/segment` service request takes input image, input point prompts, corresponding labels and the box prompt.
+```python
+response = sam_service(image = CvBridge(img_rgb),                             # Input image
+            query_points = [PointMsg(x=x, y=y, z=0) for (x, y) in points],    # Input prompt points
+            query_labels = labels,                                            # Input positive and negative labels for points
+            boxes = msg_boxes,                                                # Positive Box prompts or None
+            multimask = True,                                                 # Multiple segmentation masks with confidence scores returned if True
+            logits = True                                                     # Low resolution mask logits returned if True
+            )
+```
+
+The `ros_sam/segment` service response contains the segmentation masks `response.masks`, confidence scores `response.scores` and the logit activations of the masks `response.logits`
+
+The service calls are wrapped up conveniently in the ROS SAM client
+
 ## Using the ROS SAM client
+
+Alternatively, one can use the ROS SAM client instead of the service calls.
 
 Initialize the client with the service name of the SAM segmentation service
 ```python
