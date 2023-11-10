@@ -15,7 +15,7 @@ from ros_sam import SAM
 if __name__ == '__main__':
     rospy.init_node('ros_sam')
 
-    model = rospy.get_param('~model', 'vit_l')
+    model = rospy.get_param('~model', 'vit_h')
     cuda  = rospy.get_param('~cuda', 'cuda')
 
     bridge = CvBridge()

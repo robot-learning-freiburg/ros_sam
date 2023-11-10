@@ -1,6 +1,11 @@
 # ROS SAM
 
-This package is what the name suggests: Meta's `segment-anything` wrapped in a ROS node.
+This package is what the name suggests: Meta's `segment-anything` wrapped in a ROS node. In this wrapper we offer...
+
+ - ROS services for segmenting images using point and box queries
+ - An RQT interface for specifying point queries interactively.
+ - A Python client which handles the serialization of queries.
+
 
 ## Installation
 
@@ -8,6 +13,7 @@ Installation is easy:
  1. Start by cloning this package into your ROS environment. 
  2. Download the (checkpoints)[https://github.com/facebookresearch/segment-anything#model-checkpoints] for the desired SAM models to the `models` directory in this package.
  3. Install SAM by running `pip install git+https://github.com/facebookresearch/segment-anything.git`.
+
 
 ## Using ROS SAM standalone
 
@@ -17,11 +23,18 @@ Run the SAM ROS node using `rosrun`:
 rosrun ros_sam sam_node.py
 ```
 
+The node has two parameters:
+ - `~model` SAM model to use, defaults to `vit_h`. Check SAM documentation for options.
+ - `~cuda` whether to use CUDA and which device, defaults to `cuda`. Use `cpu` if you have no CUDA.If you want to use a specific GPU, set someting like `cuda:1`.
+
 The node currently offers a single service `ros_sam/segment` which can be called to segment an image. Check `rossrv show ros_sam/Segmentation` for request and response specifications.
 
-You can test SAM by starting the node and then running `rosrun ros_sam sam_test.py`.
+You can test SAM by starting the node and then running `rosrun ros_sam sam_test.py`. This should yield the following result:
 
-## ROS SAM Services
+<img src="figures/segmentation-example.png" width=50% height=50%>
+
+
+### ROS Services
 
 `ros_sam` offers a single service `segment` of the type `ros_sam/Segmentation.srv`. The service definition is
 ```
@@ -43,11 +56,29 @@ The service request takes input image, input point prompts, corresponding labels
 
 To learn more about the types and use of different queries, please refer to the [original SAM tutorial](https://github.com/facebookresearch/segment-anything/blob/main/notebooks/predictor_example.ipynb)
 
-The service calls are wrapped up conveniently in the ROS SAM client
+The service calls are wrapped up conveniently in the ROS SAM client.
+
+
+## Using with RQT click interface
+
+To use the GUI install the following in your ROS workspace:
+
+[rqt_image_view_seg](https://github.com/ipab-slmc/rqt_image_view_seg)
+
+Run the launch file:
+
+`roslaunch ros_sam gui_test.launch`
+
+Check the terminal and wait until the SAM model has finished loading.
+
+There will be two windows loaded. One will have the header `rqt_image_view_seg__ImageView` and the other `rqt_image_view__ImageView`, note the lack of `_seg`. The first window is where you should click, so select the topic of the camera you want to view from the drop down. In the second window you should select `/rqt_image_segmentation/masked_image`. This is where the segmented image will be displayed.
+
+<img src="figures/interface-example.png" width=50% height=50%>
+
 
 ## Using ROS SAM client
 
-Alternatively, one can use the ROS SAM client instead of the service calls.
+Alternatively, if you don't feel like assembling the service calls yourself, one can use the ROS SAM client instead of the service calls.
 
 Initialize the client with the service name of the SAM segmentation service
 ```python
@@ -69,20 +100,3 @@ from ros_sam import show_mask, show_points
 show_mask(masks[0], plt.gca())
 show_points(points, np.asarray(labels), plt.gca())
 ```
-<img src="https://github.com/ARoefer/ros_sam/blob/devel/harsha/figures/segmentation-example.png" width=50% height=50%>
-
-## Using with RQT click interface
-
-To use the GUI install the following in your ROS workspace:
-
-[rqt_image_view_seg](https://github.com/ipab-slmc/rqt_image_view_seg)
-
-Run the launch file:
-
-`roslaunch ros_sam gui_test.launch`
-
-Check the terminal and wait until the SAM model has finished loading.
-
-There will be two windows loaded. One will have the header `rqt_image_view_seg__ImageView` and the other `rqt_image_view__ImageView`, note the lack of `_seg`. The first window is where you should click, so select the topic of the camera you want to view from the drop down. In the second window you should select `/rqt_image_segmentation/masked_image`. This is where the segmented image will be displayed.
-
-<img src="https://github.com/ARoefer/ros_sam/blob/devel/russell/figures/interface-example.png" width=50% height=50%>
