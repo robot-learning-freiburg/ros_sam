@@ -11,7 +11,7 @@ This package is what the name suggests: Meta's `segment-anything` wrapped in a R
 
 Installation is easy: 
  1. Start by cloning this package into your ROS environment. 
- 2. Download the (checkpoints)[https://github.com/facebookresearch/segment-anything#model-checkpoints] for the desired SAM models to the `models` directory in this package.
+ 2. Download the [checkpoints](https://github.com/facebookresearch/segment-anything#model-checkpoints) for the desired SAM models to the `models` directory in this package.
  3. Install SAM by running `pip install git+https://github.com/facebookresearch/segment-anything.git`.
 
 
