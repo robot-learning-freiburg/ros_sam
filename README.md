@@ -2,7 +2,7 @@
 
 This package is what the name suggests: Meta's `segment-anything` wrapped in a ROS node. In this wrapper we offer...
 
- - ROS services for segmenting images using point and box queries
+ - ROS services for segmenting images using point and box queries.
  - An RQT interface for specifying point queries interactively.
  - A Python client which handles the serialization of queries.
 
