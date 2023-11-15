@@ -137,6 +137,10 @@ masked_image_ptr->image = blended_image;
 
 </details>
 
+##### Demo
+
+<img src="modified-mask.png" width=50% height=50%>
+
 ## Using ROS SAM client
 
 Alternatively, if you don't feel like assembling the service calls yourself, one can use the ROS SAM client instead of the service calls.
