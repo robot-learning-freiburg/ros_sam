@@ -9,7 +9,7 @@ from pathlib   import Path
 
 from geometry_msgs.msg import Point as PointMsg
 from std_msgs.msg      import Int32MultiArray as Int32MultiArrayMsg
-from ros_sam.srv import Segmentation         as SegmentationSrv, \
+from ros_sam_msgs.srv import Segmentation         as SegmentationSrv, \
                         SegmentationRequest  as SegmentationRequestMsg
 
 

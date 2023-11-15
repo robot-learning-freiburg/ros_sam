@@ -5,7 +5,7 @@ import cv2
 
 from cv_bridge   import CvBridge
 
-from ros_sam.srv import Segmentation         as SegmentationSrv, \
+from ros_sam_msgs.srv import Segmentation         as SegmentationSrv, \
                         SegmentationRequest  as SegmentationRequestMsg, \
                         SegmentationResponse as SegmentationResponseMsg
 
