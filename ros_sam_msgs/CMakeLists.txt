@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(ros_sam)
+project(ros_sam_msgs)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -8,8 +8,6 @@ project(ros_sam)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  rospy
-  cv_bridge
   geometry_msgs
   sensor_msgs
   std_msgs
@@ -23,7 +21,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
-catkin_python_setup()
+# catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -108,7 +106,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES ros_sam
+#  LIBRARIES ros_sam_msgs
 #  CATKIN_DEPENDS geometry_msgs rospy sensor_msgs std_msgs
 #  DEPENDS system_lib
 )
@@ -119,14 +117,14 @@ catkin_package(
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(
+# include_directories(
 # include
-  ${catkin_INCLUDE_DIRS}
-)
+#   ${catkin_INCLUDE_DIRS}
+# )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/ros_sam.cpp
+#   src/${PROJECT_NAME}/ros_sam_msgs.cpp
 # )
 
 ## Add cmake target dependencies of the library
