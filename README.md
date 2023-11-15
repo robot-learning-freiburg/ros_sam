@@ -135,11 +135,13 @@ masked_image_ptr->image = blended_image;
 - After declaring variables, you set mask intensity via `mask *= 2;`. This line multiplies every pixel in the mask by 2, effectively increasing the mask's intensity. This is useful if the mask is too faint and you want to make it more visible.
 - `mask_strength` controls the opacity of the mask. A value of 0.5 means the mask and the original image are blended equally.
 
-##### Demo
+</details>
+
+##### Mask Modification Demo
 
 <img src="figures/modified-mask.png" width=50% height=50%>
 
-</details>
+
 
 ## Using ROS SAM client
 
