@@ -75,6 +75,67 @@ There will be two windows loaded. One will have the header `rqt_image_view_seg__
 
 <img src="figures/interface-example.png" width=50% height=50%>
 
+### Parameter Modifications
+
+Section contains information on how to modify certain aspects of the mask output in [rqt_image_view_seg](https://github.com/ipab-slmc/rqt_image_view_seg). 
+
+#### Modifying Mask Color and Intensity 
+
+Within your local `rqt_image_view_seg` package, you should modify the file: `/rqt_image_view_seg/src/rqt_image_view_seg/image_view.cpp`.
+
+<details>
+  <summary><i><b><u>| Click here to expand for details |</u></b></i></summary>
+____
+
+You will find this segment: 
+
+```
+std::vector<cv::Mat> rgbChannels;
+    cv::Mat zeros = cv::Mat::zeros(cv::Size(masked_image_ptr->image.cols, masked_image_ptr->image.rows), CV_8UC1);
+    cv::Mat mask = mask_ptr->image;
+    for (int i = 0; i < 3; i++)
+    {
+
+      if (i == color)
+      {
+        rgbChannels.push_back(mask);
+      }
+      else
+      {
+        rgbChannels.push_back(zeros);
+      }
+    }
+
+    cv::merge(rgbChannels, out_image);
+```
+
+Replace it with: 
+
+```
+cv::Mat out_image;
+std::vector<cv::Mat> rgbChannels;
+cv::Mat zeros = cv::Mat::zeros(cv::Size(masked_image_ptr->image.cols, masked_image_ptr->image.rows), CV_8UC1);
+cv::Mat mask = mask_ptr->image;
+mask *= 2; // Scale the mask values to increase intensity (you can adjust this factor)
+
+rgbChannels.push_back(zeros); // Red channel set to zero
+rgbChannels.push_back(mask);  // Green channel set to mask
+rgbChannels.push_back(zeros); // Blue channel set to zero
+
+cv::merge(rgbChannels, out_image);
+
+// Adjusting blending with the original image
+float mask_strength = 0.1; // Control the strength of the mask (0.5 for equal blending, closer to 1 for stronger mask)
+cv::Mat blended_image;
+cv::addWeighted(masked_image_ptr->image, 1 - mask_strength, out_image, mask_strength, 0, blended_image);
+masked_image_ptr->image = blended_image;
+```
+##### Breakdown
+
+- After declaring variables, you set mask intensity via `mask *= 2;`. This line multiplies every pixel in the mask by 2, effectively increasing the mask's intensity. This is useful if the mask is too faint and you want to make it more visible.
+- `mask_strength` controls the opacity of the mask. A value of 0.5 means the mask and the original image are blended equally.
+
+</details>
 
 ## Using ROS SAM client
 
