@@ -139,7 +139,7 @@ masked_image_ptr->image = blended_image;
 
 ##### Demo
 
-<img src="modified-mask.png" width=50% height=50%>
+<img src="figures/modified-mask.png" width=50% height=50%>
 
 ## Using ROS SAM client
 
