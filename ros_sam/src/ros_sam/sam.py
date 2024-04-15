@@ -14,11 +14,11 @@ class SAM():
         checkpoints = list(model_dir.glob(f'sam_{model_type}_*.pth'))
 
         if len(checkpoints) == 0:
-            raise RuntimeError(f'No matching checkpoints for SAM model "{model_type}" was found in "{model_dir}"')
-        
+            raise RuntimeError(f'No matching checkpoints for SAM model "{model_type}" was found in "package://ros_sam/models"')
+
         if len(checkpoints) > 1:
-            raise RuntimeError(f'No unique checkpoint for SAM model "{model_type}" found in "{model_dir}"')
-        
+            raise RuntimeError(f'No unique checkpoint for SAM model "{model_type}" found in "package://ros_sam/models"')
+
         gc.collect()
         torch.cuda.empty_cache()
 
@@ -29,13 +29,13 @@ class SAM():
             sam_model.to(device=self._device)
 
         self._predictor = SamPredictor(sam_model)
-    
+
     def __del__(self):
         gc.collect()
         torch.cuda.empty_cache()
 
     def segment(self, img, points, point_labels, boxes=None, multimask=True):
-        self._predictor.set_image(img)        
+        self._predictor.set_image(img)
         return self._predictor.predict(
             point_coords=points,
             point_labels=point_labels,

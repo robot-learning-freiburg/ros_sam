@@ -5,9 +5,9 @@ import cv2
 
 from cv_bridge   import CvBridge
 
-from ros_sam.srv import Segmentation         as SegmentationSrv, \
-                        SegmentationRequest  as SegmentationRequestMsg, \
-                        SegmentationResponse as SegmentationResponseMsg
+from ros_sam_msgs.srv import Segmentation         as SegmentationSrv, \
+                             SegmentationRequest  as SegmentationRequestMsg, \
+                             SegmentationResponse as SegmentationResponseMsg
 
 from ros_sam import SAM
 
@@ -34,7 +34,7 @@ if __name__ == '__main__':
             print("Segmenting at pixels:")
             for point in points:
                 print(f"{point[0]}, {point[1]}")
-                
+
 
             print(img.shape)
 
@@ -56,4 +56,3 @@ if __name__ == '__main__':
 
     while not rospy.is_shutdown():
         rospy.sleep(0.2)
-    

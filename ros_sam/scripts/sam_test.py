@@ -6,17 +6,16 @@ import matplotlib.pyplot as plt
 
 from cv_bridge import CvBridge
 from pathlib   import Path
+from ros_sam   import SAMClient, \
+                      show_box,  \
+                      show_mask, \
+                      show_points
 
 from geometry_msgs.msg import Point as PointMsg
 from std_msgs.msg      import Int32MultiArray as Int32MultiArrayMsg
-from ros_sam.srv import Segmentation         as SegmentationSrv, \
-                        SegmentationRequest  as SegmentationRequestMsg
+from ros_sam_msgs.srv  import Segmentation         as SegmentationSrv, \
+                              SegmentationRequest  as SegmentationRequestMsg
 
-
-from ros_sam import SAMClient, \
-                    show_mask, \
-                    show_points, \
-                    show_box
 
 if __name__ == '__main__':
     rospy.init_node('ros_sam_test')
