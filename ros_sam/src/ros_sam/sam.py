@@ -10,7 +10,8 @@ import gc
 
 class SAM():
     def __init__(self, model_type, cuda_device=None) -> None:
-        checkpoints = list(Path(f'{Path(__file__).parent}/../../models').glob(f'sam_{model_type}_*.pth'))
+        model_dir   = Path(Path(__file__).parent.parent.parent / 'models').absolute()
+        checkpoints = list(model_dir.glob(f'sam_{model_type}_*.pth'))
 
         if len(checkpoints) == 0:
             raise RuntimeError(f'No matching checkpoints for SAM model "{model_type}" was found in "package://ros_sam/models"')
